@@ -1,18 +1,16 @@
 <template>
-  <h1>Events for Good</h1>
-  <div class="events">
-    <EventCard v-for="event in events" :key="event.id" :event="event" />
+  <div v-if="event">
+    <h1>{{ event.title }}</h1>
+    <p>{{ event.time }} on {{ event.date }} @ {{ event.location }}</p>
+    <p>{{ event.description }}</p>
   </div>
 </template>
 
 <script>
-import EventCard from '../components/EventCard.vue'
 export default {
-  components: {
-    EventCard
-  },
+  props: ['id'],
   created() {
-    this.$store.dispatch('fetchEvents')
+    this.$store.dispatch('fetchEvent', this.id)
     .catch(error => {
       this.$router.push({
         name: 'ErrorDisplay',
@@ -21,17 +19,9 @@ export default {
     })
   },
   computed: {
-    events() {
-      return this.$store.state.events
+    event() {
+      return this.$store.state.event
     }
   }
 }
 </script>
-
-<style scoped>
-.events {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-</style>
