@@ -1,5 +1,7 @@
 # event-manager
 
+# you can see live project here: https://silly-fermi-268bf1.netlify.app/error/Error:%20Network%20Error
+
 ## Project setup
 ```
 npm install
