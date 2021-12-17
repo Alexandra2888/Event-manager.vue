@@ -1,28 +1,37 @@
 <template>
-  <div v-if="event">
-    <h1>{{ event.title }}</h1>
-    <p>{{ event.time }} on {{ event.date }} @ {{ event.location }}</p>
-    <p>{{ event.description }}</p>
+  <h1>Events for Good</h1>
+  <div class="events">
+    <EventCard v-for="event in events" :key="event.id" :event="event" />
   </div>
 </template>
 
 <script>
-import EventService from '@/../services/EventService.js'
+import EventCard from '../components/EventCard.vue'
 export default {
-  props: ['id'],
-  data() {
-    return {
-      event: null
-    }
+  components: {
+    EventCard
   },
   created() {
-    EventService.getEvent(this.id)
-      .then(response => {
-        this.event = response.data
+    this.$store.dispatch('fetchEvents')
+    .catch(error => {
+      this.$router.push({
+        name: 'ErrorDisplay',
+        params: { error: error }
       })
-      .catch(error => {
-        console.log(error)
-      })
+    })
+  },
+  computed: {
+    events() {
+      return this.$store.state.events
+    }
   }
 }
 </script>
+
+<style scoped>
+.events {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>
